@@ -3,7 +3,7 @@
 This project is an API developed in .NET 8 and C# designed to synchronize reservation data between Oracle Opera Cloud and HubSpot CRM.
 
 ## Project Status
-Currently, the project has completed Phase 2, achieving data persistence in SQL Server and exposing functional endpoints tested with Postman.
+Currently, the project has completed Phase 2, achieving data persistence in SQL Server and exposing functional endpoints tested with Postman. Will add new more features soon.
 
 ## Features
 - **Architecture:** Web API with Dependency Injection.
