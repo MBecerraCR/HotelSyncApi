@@ -1,22 +1,47 @@
-# HotelSyncApi - Opera Cloud and HubSpot Integration
+# HotelSync Solution 🏨⚡️
 
-This project is an API developed in .NET 8 and C# designed to synchronize reservation data between Oracle Opera Cloud and HubSpot CRM.
+A robust integration ecosystem built with **.NET 8** and **C#** designed to synchronize high-volume hospitality data between **Oracle Opera Cloud** and **HubSpot CRM**.
 
-## Project Status
-Currently, the project has completed Phase 2, achieving data persistence in SQL Server and exposing functional endpoints tested with Postman. Will add new more features soon.
+## 🏗 System Architecture
+The solution follows a distributed architecture to ensure high availability and separation of concerns:
 
-## Features
-- **Architecture:** Web API with Dependency Injection.
+1.  **HotelSyncApi (Web API):** Handles incoming webhooks, manual triggers, and provides an interface for data management.
+2.  **HotelSyncWorker (Worker Service):** A background process that performs constant polling to Opera Cloud and processes synchronization queues asynchronously.
+3.  **SQL Server Layer:** Ensures data persistence, tracking every synchronization state (`PENDING`, `SUCCESS`, `ERROR`).
 
-- **Database:** SQL Server (using `Microsoft.Data.SqlClient`).
+---
 
-- **Endpoints:**
+## 🚀 Project Progress
 
-- `POST /api/Sync`: Receives integration data and records it in the `SyncRecords` table.
+### Phase 1 & 2: Core API & Persistence
+- Established a **Repository Pattern** for database operations.
+- Implemented **SQL Server** integration using `Microsoft.Data.SqlClient`.
+- Created the `SyncRecords` table to log and track every reservation movement.
 
-- **Logging:** Status tracing system (`PENDING`, `SUCCESS`, `ERROR`).
+### Phase 3: HubSpot CRM Integration
+- Developed a dedicated `HubSpotService` using `HttpClient`.
+- Integrated **HubSpot Private Apps** with OAuth 2.0 (Bearer Tokens).
+- Automated the creation and association of **Contacts** and **Deals** via HubSpot's CRM API.
 
-## Requirements
-- .NET 8 SDK
-- SQL Server Express
-- Postman (for endpoint testing)
+### Phase 4: Background Processing (Worker Services)
+- Added a **Worker Service** project to handle long-running background tasks.
+- Implemented an `OperaPollingWorker` that simulates real-time data fetching from Opera Cloud.
+- Configured a resilient polling loop that recovers from API errors without stopping the service.
+
+---
+
+## 🛠 Tech Stack
+- **Backend:** .NET 8 (Web API & Worker Service)
+- **Language:** C# 12
+- **Database:** SQL Server Express
+- **Integrations:** HubSpot CRM API (REST)
+- **Tools:** Visual Studio 2022, Postman, Git
+
+---
+
+## ⚙️ How to Run
+1.  **Database:** Execute the `database_setup.sql` script in your SQL Server instance.
+2.  **Configuration:** Update `appsettings.json` with your `ConnectionStrings` and HubSpot `AccessToken`.
+3.  **Startup:** - Right-click the **Solution** > **Properties**.
+    - Set **Multiple Startup Projects** to "Start" for both `HotelSyncApi` and `HotelSyncWorker`.
+    - Press **F5**.

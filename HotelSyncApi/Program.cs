@@ -2,6 +2,8 @@ using HotelSyncApi.Data;
 using HotelSyncApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 builder.Services.AddScoped<SyncRepository>();
 builder.Services.AddHttpClient<HubSpotService>();
 

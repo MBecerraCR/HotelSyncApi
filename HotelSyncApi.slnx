@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="HotelSyncApi/HotelSyncApi.csproj" />
+  <Project Path="HotelSyncWorker/HotelSyncWorker.csproj" Id="b5f8cfbb-e5d9-4b6e-be79-c652686a2ce9" />
 </Solution>
