@@ -37,6 +37,18 @@ The solution follows a distributed architecture to ensure high availability and 
 - **Integrations:** HubSpot CRM API (REST)
 - **Tools:** Visual Studio 2022, Postman, Git
 
+## 🔄 Integration Flow
+
+### 1. Opera to HubSpot (Polling)
+- A **Background Worker** polls the Opera Cloud API every 10 seconds for new reservations.
+- New reservations are synced as **Deals** in HubSpot.
+
+### 2. HubSpot to Opera (Webhooks)
+- The system exposes a **RESTful Webhook endpoint** using **ngrok** for local development.
+- When a Deal is moved to **'Closed Won'** in HubSpot, a webhook triggers an event.
+- The **HotelSyncApi** receives the payload and queues a **PENDING** job in **SQL Server**.
+- This decoupled architecture ensures high availability and fault tolerance.
+
 ---
 
 ## ⚙️ How to Run
@@ -45,3 +57,5 @@ The solution follows a distributed architecture to ensure high availability and 
 3.  **Startup:** - Right-click the **Solution** > **Properties**.
     - Set **Multiple Startup Projects** to "Start" for both `HotelSyncApi` and `HotelSyncWorker`.
     - Press **F5**.
+
+    Deployment Note: For production environments, this solution is designed to be deployed as a Windows Service (Worker) and hosted on Azure App Services or IIS (API), utilizing a CI/CD pipeline for automated deployments.
