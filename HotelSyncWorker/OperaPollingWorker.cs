@@ -15,31 +15,43 @@ public class OperaPollingWorker : BackgroundService
     }
 
     // This method runs once when the service starts
+    // Inside HotelSyncWorker -> Worker.cs
+    // Dentro de HotelSyncWorker -> OperaPollingWorker.cs
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("--- Opera Polling Worker Started ---");
+        _logger.LogInformation("HotelSync Worker started at: {time}", DateTimeOffset.Now);
 
-        // Main loop: continues running until the service is stopped
+        // En la vida real, el Worker necesita un HttpClient para "despertar" a la API
+        using var httpClient = new HttpClient();
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try
             {
-                _logger.LogInformation("Executing polling cycle at: {time}", DateTimeOffset.Now);
-                await PollOperaCloudAsync(stoppingToken);
+                _logger.LogInformation("--- Starting scheduled sync trigger ---");
+
+                // SUSTITUCIÓN DE LA VIDA REAL: 
+                // En lugar de hacer la lógica aquí, el Worker le avisa a la API que trabaje.
+                // Por ahora, usaremos la URL de tu API local (ajusta el puerto si es necesario)
+                var response = await httpClient.PostAsync("https://localhost:7224/api/sync/run", null, stoppingToken);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation("Sync trigger sent successfully to HotelSyncApi.");
+                }
+                else
+                {
+                    _logger.LogError("Failed to trigger sync. API responded with: {status}", response.StatusCode);
+                }
             }
             catch (Exception ex)
             {
-                // If a cycle fails, we log the error but keep the worker alive for the next attempt
-                _logger.LogError(ex, "An unexpected error occurred during the polling cycle.");
+                _logger.LogError(ex, "Error occurred while trying to trigger the SyncEngine.");
             }
 
-            _logger.LogInformation("Waiting {s} seconds for the next cycle...", _pollingInterval.TotalSeconds);
-
-            // Task.Delay is asynchronous and doesn't block the main execution thread
-            await Task.Delay(_pollingInterval, stoppingToken);
+            // El intervalo de 15 minutos según el SOW
+            await Task.Delay(TimeSpan.FromMinutes(15), stoppingToken);
         }
-
-        _logger.LogWarning("Worker is shutting down (Cancellation requested).");
     }
 
     private async Task PollOperaCloudAsync(CancellationToken cancellationToken)
@@ -66,4 +78,6 @@ public class OperaPollingWorker : BackgroundService
 
         _logger.LogInformation("Cycle completed successfully.");
     }
+
+
 }

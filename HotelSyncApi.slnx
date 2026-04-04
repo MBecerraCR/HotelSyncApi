@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="HotelSyncApi/HotelSyncApi.csproj" />
   <Project Path="HotelSyncWorker/HotelSyncWorker.csproj" Id="b5f8cfbb-e5d9-4b6e-be79-c652686a2ce9" />
+  <Project Path="OperaCloudMock/OperaCloudMock.csproj" Id="17923630-bbdc-456a-a654-952bfa58969b" />
 </Solution>

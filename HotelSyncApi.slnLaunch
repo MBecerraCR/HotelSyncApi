@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "HotelSyncApi\\HotelSyncApi.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "HotelSyncWorker\\HotelSyncWorker.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "OperaCloudMock\\OperaCloudMock.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
